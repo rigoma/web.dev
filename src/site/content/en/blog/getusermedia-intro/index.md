@@ -173,10 +173,10 @@ pass `{video: true, audio: true}`:
     };
 
     // Not showing vendor prefixes.
-    navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
+    navigator.getUserMedia({video: true, audio: true}, function(mediaStream) {
     var video = document.querySelector('video');
-    video.src = window.URL.createObjectURL(localMediaStream);
-
+    video.srcObject = mediaStream;
+  
     // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
     // See crbug.com/110938.
     video.onloadedmetadata = function(e) {
@@ -188,10 +188,7 @@ pass `{video: true, audio: true}`:
 
 OK. So what's going on here? Media capture is a perfect example of new HTML5 APIs
 working together. It works in conjunction with our other HTML5 buddies, `<audio>` and `<video>`.
-Notice that we're not setting a `src` attribute or including `<source>` elements
-on the `<video>` element. Instead of feeding the video a URL to a media file, we're feeding
-it a [Blob URL](/tutorials/workers/basics/#toc-inlineworkers-bloburis) obtained
-from a `LocalMediaStream` object representing the webcam.
+Notice that we're setting the `src` attribute to a `MediaStream` object representing the webcam.
 
 I'm also telling the `<video>` to `autoplay`, otherwise it would be frozen on
 the first frame. Adding `controls` also works as you'd expected.
